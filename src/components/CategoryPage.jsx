@@ -10,6 +10,7 @@ const CategoryPage = () => {
     (cat) => cat.category === decodeURIComponent(categoryTitle || '')
   );
 console.log(categoryData.questions)
+
 };
 
 export default CategoryPage;
