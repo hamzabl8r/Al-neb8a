@@ -1,20 +1,19 @@
-import CategoryPage from "./components/CategoryPage";
-import "./App.css";
-import { Route, Routes } from "react-router-dom";
-import GameStart from "./components/GameStart";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import CategorySelection from "./components/CategorySelection";
+import GameSetup from "./components/GameSetup";
+import QuizPage from "./components/CategoryPage";
+import "./App.css";
 
-const App = () => {
-  return (
-    <div className="App">
+
+function App() {
+  return (<>
       <Routes>
         <Route path="/" element={<CategorySelection />} />
-        <Route path="/gamestart" element={<GameStart />} />
-        
-        <Route path="/category/:categoryTitle" element={<CategoryPage />} />
+        <Route path="/setup/:categoryTitle" element={<GameSetup />} />
+        <Route path="/gamestart/:categoryTitle" element={<QuizPage />} />
       </Routes>
-    </div>
+      </>
   );
-};
+}
 
 export default App;
