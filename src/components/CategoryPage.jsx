@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react"; 
 import { useParams, Link, useLocation } from "react-router-dom";
 import gameData from "./Data";
 import "./QuizPage.css";
@@ -6,6 +6,12 @@ import "./QuizPage.css";
 const QuizPage = () => {
   const { categoryTitle } = useParams();
   const location = useLocation();
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [currentTeamIndex, setCurrentTeamIndex] = useState(0);
+  const [timer, setTimer] = useState(15); 
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [isAnswered, setIsAnswered] = useState(false);
+  const [showResults, setShowResults] = useState(false);
 
   const { teamNames: initialTeamNames } = location.state || {};
   const teamNames =
@@ -16,17 +22,26 @@ const QuizPage = () => {
       : ["فريق 1"];
 
   const numberOfTeams = teamNames.length;
+  const [scores, setScores] = useState(new Array(numberOfTeams).fill(0));
+
+  useEffect(() => {
+    if (isAnswered) return;
+
+    if (timer <= 0) {
+      setIsAnswered(true); 
+      return;
+    }
+
+    const intervalId = setInterval(() => {
+      setTimer((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [timer, isAnswered]);
 
   const categoryData = gameData.find(
     (cat) => cat.category === decodeURIComponent(categoryTitle || "")
   );
-
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [currentTeamIndex, setCurrentTeamIndex] = useState(0);
-  const [scores, setScores] = useState(new Array(numberOfTeams).fill(0));
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
-  const [isAnswered, setIsAnswered] = useState(false);
-  const [showResults, setShowResults] = useState(false);
 
   if (!categoryData) {
     return (
@@ -34,7 +49,7 @@ const QuizPage = () => {
         <div className="results-card">
           <h2>الصنف غير موجود</h2>
           <Link to="/" className="back-to-home-btn">
-            القائمة الرئيسية{" "}
+            القائمة الرئيسية
           </Link>
         </div>
       </div>
@@ -68,6 +83,7 @@ const QuizPage = () => {
     }
     setIsAnswered(false);
     setSelectedAnswer(null);
+    setTimer(15); 
   };
 
   const handlePlayAgain = () => {
@@ -77,6 +93,7 @@ const QuizPage = () => {
     setShowResults(false);
     setIsAnswered(false);
     setSelectedAnswer(null);
+    setTimer(15); 
   };
 
   if (showResults) {
@@ -88,24 +105,25 @@ const QuizPage = () => {
     return (
       <div className="quiz-page-container">
         <div className="results-card final-results">
-          <h2>🏆 اللعبة وفات، يعطيكم الصحة! 🏆</h2>{" "}
+          <h2>🏆 اللعبة وفات، يعطيكم الصحة! 🏆</h2>
           <div className="team-final-scores">
             {scores.map((score, index) => (
               <div
                 key={index}
                 className={`team-score-item ${
                   winners.includes(teamNames[index]) ? "winner" : ""
-                }`}>
+                }`}
+              >
                 {teamNames[index]}: <strong>{score}</strong>
               </div>
             ))}
           </div>
           <p className="winner-announcement">الفائز: {winners.join(" و ")}</p>
           <button className="play-again-btn" onClick={handlePlayAgain}>
-            نعاودو طرح آخر؟{" "}
+            نعاودو طرح آخر؟
           </button>
           <Link to="/" className="back-to-home-btn">
-            القائمة الرئيسية{" "}
+            القائمة الرئيسية
           </Link>
         </div>
       </div>
@@ -119,6 +137,7 @@ const QuizPage = () => {
           <h2 className="turn-indicator">
             الدور على: {teamNames[currentTeamIndex]}
           </h2>
+          <div className="timer">⏳ الوقت: {timer}</div>
           <div className="team-scores-container">
             {scores.map((score, index) => (
               <span key={index} className="team-score">
@@ -142,7 +161,8 @@ const QuizPage = () => {
                 key={index}
                 className={buttonClass}
                 onClick={() => handleAnswerClick(choice)}
-                disabled={isAnswered}>
+                disabled={isAnswered}
+              >
                 {choice}
               </button>
             );

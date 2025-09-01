@@ -1,49 +1,56 @@
-
-App {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
+.App {
+  text-align: center;
+  background-color: #b85353;
+  overflow-y: hidden;
 }
-.Cat{
+
+.Cat {
   width: 100%;
   height: 100vh;
-  background-color: none;
-
+  background-color: #f6f4f4;
+  overflow-y: hidden;
 }
+
 .app-header {
   background-color: #e2d7c5;
   border-bottom: 2px solid #735621;
   padding: 1rem 2rem;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .logo-text {
   color: #e53935;
   font-size: 1.5rem;
   font-weight: bold;
-  margin: 0;
+}
+
+.img {
+  width: 50px;
+  height: 50px;
+  margin-left: 30px;
+  border-radius: 50%;
 }
 
 .category-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 2rem;
+  height: auto;
   max-width: 900px;
   margin: 20px auto;
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  overflow-y: hidden;
 }
 
-/* --- Category Card Styles --- */
 .category-card {
-  aspect-ratio: 1 / 1.5;
+  aspect-ratio: 1 / 1.4;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -59,85 +66,62 @@ App {
 
 .category-card:hover {
   transform: scale(1.05);
+  color: white;
 }
 
 .category-image {
   width: 50%;
   height: 50%;
   object-fit: contain;
-  margin-bottom: 0.5rem; 
 }
 
 .category-title {
-  font-size: 1.1rem;
+  font-size: 1.4rem;
   margin: 0;
-  text-decoration: none;
-}
-
-/* CategoryPage */
-
-.category-page {
-  padding: 2rem;
-  max-width: 800px;
-  margin: auto;
-  text-align: center;
-}
-
-.category-page h1 {
-  font-size: 2.5rem;
-  color: #333;
-}
-
-.questions-list {
-  margin-top: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.question-card {
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 1.5rem;
-  text-align: right; 
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  position: relative;
-  overflow: hidden;
-}
-
-.question-text {
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-}
-
-.answer-text {
-  color: #007bff;
-}
-
-.difficulty {
-  position: absolute;
-  top: 10px;
-  left: -1px;
-  background-color: #ccc;
   color: white;
-  padding: 5px 15px;
-  border-radius: 0 15px 15px 0;
-  font-size: 0.8rem;
 }
 
-.difficulty-سهل { background-color: #28a745; }
-.difficulty-متوسط { background-color: #ffc107; color: #333; }
-.difficulty-صعب { background-color: #dc3545; }
-
-.back-link {
-  display: inline-block;
-  margin-top: 2rem;
-  font-size: 1.2rem;
+.category-link {
   text-decoration: none;
-  color: #007bff;
 }
 
+@media (max-width: 768px) {
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    padding: 15px;
+  }
+  .logo-text {
+    font-size: 1.3rem;
+  }
+  .category-title {
+    font-size: 1.2rem;
+  }
+}
 
-
-
+@media (max-width: 480px) {
+  .app-header {
+    padding: 0.8rem 1rem;
+  }
+  .logo-text {
+    font-size: 1.2rem;
+  }
+  .img {
+    width: 40px;
+    height: 40px;
+    margin-left: 15px;
+  }
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    padding: 10px;
+    margin: 10px;
+  }
+  .category-card {
+    padding: 0.5rem;
+    aspect-ratio: 1 / 1.2;
+  }
+  .category-title {
+    font-size: 1rem;
+  }
+}

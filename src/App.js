@@ -6,13 +6,13 @@ import "./App.css";
 
 
 function App() {
-  return (<>
+  return (<div className="App">
       <Routes>
         <Route path="/" element={<CategorySelection />} />
         <Route path="/setup/:categoryTitle" element={<GameSetup />} />
         <Route path="/gamestart/:categoryTitle" element={<QuizPage />} />
       </Routes>
-      </>
+      </div>
   );
 }
 

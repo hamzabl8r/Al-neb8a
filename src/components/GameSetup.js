@@ -33,8 +33,8 @@ const GameSetup = () => {
   return (
     <div className="quiz-page-container">
       <div className="results-card" style={{ textAlign: "center" }}>
-        <h2 style={{ fontSize: "2rem", marginBottom: "10px" }}>
-          إعدادات اللعبة
+        <h2 style={{ fontSize: "2rem", marginBottom: "10px" , color: "#d14518"}}>
+           النابغة
         </h2>
         <p style={{ fontSize: "1.2rem", marginBottom: "20px" }}>
           الصنف: <strong>{decodeURIComponent(categoryTitle)}</strong>

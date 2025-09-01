@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const CategoryCard = ({ backgroundColor, title, image, to }) => {
+const CategoryCard = ({ backgroundColor, title, itemImage, to }) => {
   const cardStyle = {
     backgroundColor: backgroundColor,
   };
@@ -8,7 +8,7 @@ const CategoryCard = ({ backgroundColor, title, image, to }) => {
   return (
     <Link to={to} className="category-link">
       <div className="category-card" style={cardStyle}>
-        {/* {image && <img src={image} alt={title} className="category-image" />} */}
+        {itemImage && <img src={itemImage} alt={title} className="category-image" />}
         <p className="category-title">{title}</p>
       </div>
     </Link>
