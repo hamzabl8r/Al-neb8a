@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"; 
+import { useState, useEffect } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 import gameData from "./Data";
 import "./QuizPage.css";
@@ -6,9 +6,8 @@ import "./QuizPage.css";
 const QuizPage = () => {
   const { categoryTitle } = useParams();
   const location = useLocation();
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [currentTeamIndex, setCurrentTeamIndex] = useState(0);
-  const [timer, setTimer] = useState(15); 
+  const [turn, setTurn] = useState(0);
+  const [timer, setTimer] = useState(15);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isAnswered, setIsAnswered] = useState(false);
   const [showResults, setShowResults] = useState(false);
@@ -26,16 +25,13 @@ const QuizPage = () => {
 
   useEffect(() => {
     if (isAnswered) return;
-
     if (timer <= 0) {
-      setIsAnswered(true); 
+      setIsAnswered(true);
       return;
     }
-
     const intervalId = setInterval(() => {
       setTimer((prev) => prev - 1);
     }, 1000);
-
     return () => clearInterval(intervalId);
   }, [timer, isAnswered]);
 
@@ -57,8 +53,15 @@ const QuizPage = () => {
   }
 
   const { questions } = categoryData;
-  const currentQuestion = questions[currentQuestionIndex];
   const totalQuestions = questions.length;
+
+  const currentTeamIndex = turn % numberOfTeams;
+  const currentQuestionIndex = turn; 
+  const currentQuestion = questions[currentQuestionIndex];
+
+  if (!currentQuestion && !showResults) {
+    setShowResults(true);
+  }
 
   const handleAnswerClick = (choice) => {
     if (isAnswered) return;
@@ -72,31 +75,27 @@ const QuizPage = () => {
   };
 
   const handleNextQuestion = () => {
-    const nextTeamIndex = (currentTeamIndex + 1) % numberOfTeams;
-    setCurrentTeamIndex(nextTeamIndex);
-    if (nextTeamIndex === 0) {
-      if (currentQuestionIndex < totalQuestions - 1) {
-        setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-      } else {
-        setShowResults(true);
-      }
+    if (turn + 1 >= totalQuestions) {
+      setShowResults(true);
+    } else {
+      setTurn((prevTurn) => prevTurn + 1);
     }
+
     setIsAnswered(false);
     setSelectedAnswer(null);
-    setTimer(15); 
+    setTimer(15);
   };
 
   const handlePlayAgain = () => {
-    setCurrentQuestionIndex(0);
-    setCurrentTeamIndex(0);
+    setTurn(0); 
     setScores(new Array(numberOfTeams).fill(0));
     setShowResults(false);
     setIsAnswered(false);
     setSelectedAnswer(null);
-    setTimer(15); 
+    setTimer(15);
   };
-
-  if (showResults) {
+  
+  if (showResults || !currentQuestion) {
     const maxScore = Math.max(...scores);
     const winners = scores
       .map((score, index) => (score === maxScore ? teamNames[index] : null))
@@ -129,6 +128,7 @@ const QuizPage = () => {
       </div>
     );
   }
+
 
   return (
     <div className="quiz-page-container">
@@ -171,8 +171,7 @@ const QuizPage = () => {
         {isAnswered && (
           <div className="quiz-footer">
             <button className="next-question-btn" onClick={handleNextQuestion}>
-              {currentQuestionIndex === totalQuestions - 1 &&
-              currentTeamIndex === numberOfTeams - 1
+              {turn === totalQuestions - 1
                 ? "عرض النتيجة"
                 : "الدور التالي"}
             </button>

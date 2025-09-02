@@ -40,8 +40,8 @@ const CategorySelection = () => {
   return (
     <div className="Cat">
       <header className="app-header">
-        <h1 className="logo-text"> النابغة</h1>
         <img src={img} alt="" className="img" />
+        <h1 className="logo-text"> النابغة</h1>
       </header>
       <div className="category-grid">
         {Object.keys(categoryColors).map((categoryName) => (
